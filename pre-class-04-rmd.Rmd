@@ -64,5 +64,33 @@ survey <- data.frame(
 The response to each question should be an integer between 1 and 5. Obviously, we have some bad values in the dataframe. The goal of this problem is to fix them.
 
 A. Using a loop, create a new dataframe called survey.clean where all the invalid values (those that are not integers between 1 and 5) are set to NA.
+```{r}
+survey.clean <- data.frame(
+  select(survey$q1),
+  for(i<7) {
+    if([i]<1 | [i]>5) {
+      [i] == NA
+    }
+  }
+)
+#not sure where this is faiiling. Idea is select a specific row or column at a time and then pick out the values that give you issue
+```
 
 B. Now, again using a loop, add a new column to the dataframe called “invalid.answers” that indicates, for each participant, how many bad answers they gave.
+```{r}
+  sum1 = 5 
+  sum2 = 5
+  sum3 = 5
+  sum4 = 5
+  sum5 = 5
+  sum6 = 5
+  for(2:6)
+     if (survey[1,i]<1 || survey[1,i]>5) {
+       sum1 = sum1 - 1
+     }
+  print(sum1)
+  
+  #not sure why this isn't working, once it works need to repeat it for each partic and then make that into a vector and then add that vector into the dataset
+     
+
+```
