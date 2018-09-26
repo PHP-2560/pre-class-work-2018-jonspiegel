@@ -20,11 +20,33 @@ for (i in 1:50) {
 ### Question 2:
 
 A.  Using a loop, add all the integers between 0 and 1000.
+```{r}
+mysum=0 
+for(i in 1:1000)
+   mysum=mysum+i
+print(mysum) #first I created the new mysum variable with an initial value of zero, then we used a for loop to increase this value by i for all i's within 1 to 1000, finally this is printed
+
+```
 
 B. Now, add all the EVEN integers between 0 and 1000 (hint: use seq())
+```{r}
+mysum=0 
+for(i in seq(0,1000,by=2))
+   mysum=mysum+i
+print(mysum)
+#Here I use the same loop as above but instead of going from 0 to 1000 we go 0 to 1000 by twos (i.e. the even ones)
+
+```
 
 C. Now, repeat A and B WITHOUT using a loop.
+```{r}
+thousand.list<-(0:1000)
+ sum(thousand.list) #here we create the list of integers 0 to 1000 and summate them
 
+even.thousand.list <- seq(0,1000,by=2)
+  sum(even.thousand.list) #here we create the list of even integers 0 to 1000 and summate them
+
+```
 ### Question 3:
 
 Here is a dataframe of survey data containing 5 questions :
