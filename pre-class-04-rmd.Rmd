@@ -66,6 +66,17 @@ The response to each question should be an integer between 1 and 5. Obviously, w
 A. Using a loop, create a new dataframe called survey.clean where all the invalid values (those that are not integers between 1 and 5) are set to NA.
 ```{r}
 survey.clean <- data.frame(
+    for(j in 1:6)  
+    for(i in 2:6)
+      if (survey[j,i]<1 || survey[j,i]>5 || is.na(survey[j,i])) {
+      survey[j,i] <- NA }
+  print(survey.clean))
+
+#I think I am incredibly close. I am waiting to delete my earlier work (below) until I get this. This will look through each value and replace it with NA if it is under 1 or over 5 and store this as survey.clean (a dataframe). Finally it will print it to check it worked. I am missing something on the syntax for assigning a specific index as NA though...
+  
+```
+  
+  
   for(i in 1:7) {
     if(survey[1,i]<1 || survey[1,i]>5 || is.na(survey[1,i])) {
       replace(survey$q1, i, NA)
@@ -87,7 +98,7 @@ B. Now, again using a loop, add a new column to the dataframe called “invalid.
        invalid.vector[j] <- (invalid.vector[j] + 1)
      }
   
-survey3b <- survey #creating matrix to work off of
+survey3b <- survey #creating dataframe to work off of
 
 survey3b$newcolumn <- invalid.vector #adding column
 
