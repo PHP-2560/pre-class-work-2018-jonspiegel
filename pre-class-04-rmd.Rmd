@@ -10,6 +10,12 @@ TESTING PUSH
 ### Question 1:
 
 Using a loop, print the integers from 1 to 50. 
+```{r}
+for (i in 1:50) {
+  if (i>0 & i < 51) print(i)
+} #I first opened a for loop with the available integers and then told it to print only those between 0 and 51 (i.e. 1 to 50), I added extra stipulations in case an input of potentially troublesome values were given (insted of giving only 1 to 50  to get out 1 to 50 as I did here)
+
+```
 
 ### Question 2:
 
