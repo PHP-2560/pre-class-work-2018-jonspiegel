@@ -111,11 +111,11 @@ standardize.me <- function(x)
   as.vector(x)
   thismean <- meanx(x)
   thissd <- sdx(x) #important to take the mean and sd before entering the loop else it will change as each value gets reassigned
- returnme <- x %>%
-      for(i in 1:length(x)) {
-        x[i] <- (x[i] - thismean/thissd)
+ x %>%
+    for(i in 1:length(x)) {
+       x[i] <- ((x[i] - thismean)/thissd)
       }
- reurn(returnme)
+ reurn(x)
 }
 #standardize.me takes in a vector x and returns a the standardized values from each column
 ```
