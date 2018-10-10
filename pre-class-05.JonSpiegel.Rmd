@@ -127,7 +127,7 @@ C. Using a loop and your new function, standardize all the variables WCGS.new da
 ```{r}
 for (i in 1:ncol(WCGS.new)) {
   standardizedwcgs <- standardize.me(WCGS.new[,i]) 
-}#whatever else the function eneds as input may change. This should go col by col and standardize it
+}#This goes column by column standardizing standarize.me into standardizedwcgs
 standardizedwcgs
 
 
