@@ -111,11 +111,10 @@ standardize.me <- function(x)
   as.vector(x)
   thismean <- meanx(x)
   thissd <- sdx(x) #important to take the mean and sd before entering the loop else it will change as each value gets reassigned
- x %>%
     for(i in 1:length(x)) {
        x[i] <- ((x[i] - thismean)/thissd)
-      }
- reurn(x)
+    }
+ return(x)
 }
 #standardize.me takes in a vector x and returns a the standardized values from each column
 ```
@@ -127,16 +126,11 @@ glimpse(WCGS.new)
 C. Using a loop and your new function, standardize all the variables WCGS.new dataset.
 ```{r}
 standardizedwcgs <- for (i in 1:ncol(WCGS.new)) {
-  print(typeof(WCGS.new[,i]))
-  standardize.me(WCGS.new[,i]) #whatever else the function eneds as input may change. This should go col by col and standardize it
-}
-standardize.me(WCGS.new[,9])
-test <- c(0,1,2,3,4,5)
-standardize.me(test)
-test %>% if (i <= length(test)) {
-  test[i] <- 2 %>%
-    test}
-test
+  standardize.me(WCGS.new[,i]) 
+}#whatever else the function eneds as input may change. This should go col by col and standardize it
+standardizedwcgs
+standardize.me(WCGS.new[,1]) #so its working for an individual column but not in my for-loop right now
+
 ```
 D. What should the mean and standard deviation of all your new standardized variables be? Test your prediction by running a loop
 ```{r}
