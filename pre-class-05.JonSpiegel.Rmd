@@ -125,18 +125,18 @@ glimpse(WCGS.new)
 ```
 C. Using a loop and your new function, standardize all the variables WCGS.new dataset.
 ```{r}
-standardizedwcgs <- for (i in 1:ncol(WCGS.new)) {
-  standardize.me(WCGS.new[,i]) 
+for (i in 1:ncol(WCGS.new)) {
+  standardizedwcgs <- standardize.me(WCGS.new[,i]) 
 }#whatever else the function eneds as input may change. This should go col by col and standardize it
 standardizedwcgs
-standardize.me(WCGS.new[,1]) #so its working for an individual column but not in my for-loop right now
+
 
 ```
 D. What should the mean and standard deviation of all your new standardized variables be? Test your prediction by running a loop
 ```{r}
 mean(standardizedwcgs)
 sd(standardizedwcgs)
-#The new mean should be zero and the new standard deviation should be one since we standardized the vector
+#The new mean should be zero and the new standard deviation should be one since we standardized the vector. IT WORKED!!!
 ```
 
 
