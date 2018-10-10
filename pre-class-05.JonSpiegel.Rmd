@@ -99,11 +99,21 @@ bmi     Body Mass Index
 
 A. Create a function called standardize.me() that takes a numeric vector as an argument, and returns the standardized version of the vector. 
 ```{r}
+meanx <- function(x) {
+  mean(x)
+}
+sdx <- function(x) {
+  sd(x)
+}
+
 standardize.me <- function(x)
 {
- returnme <- x %>% summarize(meanx = mean(x), sdx = sd(x)) %>%
-      for(i in length(x)) {
-        x[i] <- ((x[i] - meanx)/sdx)
+  as.vector(x)
+  thismean <- meanx(x)
+  thissd <- sdx(x) #important to take the mean and sd before entering the loop else it will change as each value gets reassigned
+ returnme <- x %>%
+      for(i in 1:length(x)) {
+        x[i] <- (x[i] - thismean/thissd)
       }
  reurn(returnme)
 }
@@ -120,6 +130,7 @@ for (i in 1:ncol(WCGS.new)) {
   print(typeof(WCGS.new[,i]))
   standardize.me(WCGS.new[,i]) #whatever else the function eneds as input may change. This should go col by col and standardize it
 }
+standardize.me(WCGS.new[,9])
 ```
 D. What should the mean and standard deviation of all your new standardized variables be? Test your prediction by running a loop
 ```{r}
@@ -132,23 +143,31 @@ D. What should the mean and standard deviation of all your new standardized vari
 
 A. Using a loop, calculate the mean weight of the subjects separated by the type of CHD they have.
 ```{r}
-#intialize a blank three element vector called meanchd
+meanchd <- as.vector(c(0,0,0,0))
+#intialize a blank four element vector called meanchd
+unique(wcgs$typchd69) #view the values it takes
+myloop <- c('no CHD', 'MI or SD', 'silent MI', 'angina') #make a vector of these to loop through
 
 wcgs %>%
-  for(i in 1:3){
-    for(typechd == i) {
-      meanchd[i] <- mean(weight)
-    }
+  for(i in 0:3) {
+    select(typchd69 == myloop[i]) %>%
+      meanchd[i] <- mean(wcgs$weight) %>%
+        meanchd2 <- meanchd
   }
-  print(meanchd) #If you really feel like getting fancy, you can make meanchd (the vector) into a dataframe so you can title the columns as each CHD condition (this seems emough however)
+
+print(meanchd2)
+
+  #this goes through each value of typchd69 and whenever it equals a given value, it takes the mean of that group
 
 ```
 B. Now do the same thing, but now do not use a loop
 ```{r}
-meanch2 <- wcgs %>%
-  group_by(typechd) %>%
-    analyze(meanwt = mean(weight))
+
+meanchd2 <- wcgs %>%
+  group_by(typchd69) %>%
+    summarize(meanwt = mean(weight))
 
 print(meanchd2)
+#this does the same as above except instead of needing to tell the computer what to loop through and create temporary vectors, we just tell it what to group by and it does thsi all on its own
 ```
 
