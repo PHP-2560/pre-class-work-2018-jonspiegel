@@ -39,6 +39,28 @@ lapply(mtcars,coef_var)
 
 4. Use vapply() to: a. Compute the standard deviation of every column in a numeric data frame. b. Compute the standard deviation of every numeric column in a mixed data frame. (Hint: you'll need to use vapply() twice.)
 ```{r}
+vapply(mtcars, sd, 1) #this takes in mtcars and goes column by column to give us an sd for each. 1 tells it to return a single value (since 1 is a vector of length 1)
+library(dplyr)
+starwars
+sd.of.numerics <- function(x) {
+  if(is.numeric(x)) {
+    sd(x)
+  }
+  else(return('this is not a numeric'))
+}
+
+vapply(starwars, is.numeric, T)
+vapply(starwars, sd.of.numerics, 1)
+
+
+
+
+for(i in ncol(starwars)) {
+  
+  if(is.numeric(starwars[,i])) {
+    <- sd(starwars[,i])
+  } #can hack part 2, will need to initialize a vector, add in an else condition in which we make NA values then remove those
+}
 
 ```
 
