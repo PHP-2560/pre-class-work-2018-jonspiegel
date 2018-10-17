@@ -20,7 +20,28 @@ f3 <- function(x, y) {
 
 
 2. Compare and contrast rnorm() and MASS::mvrnorm(). How could you make them more consistent?
+```{r}
+?rnorm #rnorm takes in n, mean=0, sd=1 and so it returns to you n many digits selected from a random normal distribution (set by default to a mean of 0 and sd of 1)
+
+?MASS::mvrnorm() #this takes in n, mu, sigma, tol=1e-6, empirical=F, EISPACK=F. This means it will return n many values from a multivariate normal distribution with mu and sigma properties (tol is by default set to 1e-6), empirical is only for the special case where mu and sigma are from empirical not population values and EISPACK is to prevent an error. It returns n many variables from the multivariable normal distribution you give it
+
+#these differ because the multivariate normal distribution is a different distribution than the normal distribution (it is a higher dimensional generalization of it). The values will of course therefore differ. Setting mu=1 and sigma=1 can allow for somewhat similar values to setting mean=1 for the rnorm variable. By setting the means equal we can get more similar outputs
+hist(MASS::mvrnorm(n=1000, mu=1,1))
+hist(rnorm(1000, mean=1))
+```
   
 3. Use lapply() and an anonymous function to find the coefficient of variation (the standard deviation divided by the mean) for all columns in the mtcars dataset.
+```{r}
+
+```
 
 4. Use vapply() to: a. Compute the standard deviation of every column in a numeric data frame. b. Compute the standard deviation of every numeric column in a mixed data frame. (Hint: you'll need to use vapply() twice.)
+```{r}
+
+```
+
+
+
+
+
+
