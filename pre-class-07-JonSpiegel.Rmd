@@ -31,10 +31,119 @@ With this project we will simulate a famoues probability problem. This will not 
 
  1. **Gambler's Ruin**: Suppose you have a bankroll of $1000 and make bets of $100 on a fair game. By simulating the outcome directly for at most 5000 iterations of the game (or hands), estimate:
     a. the probability that you have "busted" (lost all your money) by the time you have placed your one hundredth bet. 
+```{r}
+
+#You lose when the cumulative sum (where a win is 1 and a loss is -1) is such that -bankroll/bet >= -cumsum (i.e. bankroll/bet tells you how many net losses you can sustain)
+play_n_rounds1 <- function(n, bankroll, bet, p=.5){
+cumsum <- 0
+thisround <- 0
+roundsmatrix <- matrix(NA, 1, n, byrow=F)
+  for(i in 1:n) {
+    if(cumsum == -bankroll/bet) {
+      roundsmatrix[i] <- cumsum
+    } else {
+      thisround <- rbinom(1,1,p)*2-1 #gives positive 1 or negative 1 (a win or a loss)
+    cumsum <- cumsum + thisround
+    roundsmatrix[i] <- cumsum}
+
+  }
+print(roundsmatrix[n]) #if this value is -bankroll/bet you ran out of money, otherwise you made it
+}
+as.list(play_n_rounds1(12, 1000,1000)) #testing the function
+
+
+simulate_survival <- function (sims, n, bankroll, bet, p=.5) {
+  results <- matrix(NA, 1,sims, byrow=F) #going to make a matrix store the simulationo results in
+  for(i in 1:sims) {
+    results[1,i] <- play_n_rounds1(n, bankroll, bet, p)
+  } #this gives us our needed output, but it is messy, if you ran out of money the value is -bankroll/bets, otherwise it is a higher value. Let's clean that up now
+  for(i in 1:sims) {
+    if(results[1,i] == -bankroll/bet) {
+      results[1,i] <- 0 #let zero represent people who went bust
+    } else (results[1,i] <- 1) #let 1 represent people who made it through without going bust
+  }
+  return(results)
+} 
+simulate_survival(100,12, 1000,1000)
+ 
+p_win <- function(matrix) {print(mean(matrix))}
+p_lose<- function(matrix) {print(1-mean(matrix))}
+
+
+#we want to run a simulation with 5000 sims, n of 100, a bankroll of 1000, and a bet of 100, (and a p of 0.5)
+p_lose(simulate_survival(5000, 100, 1000, 100))
+
+
+
+
+
+
+
+
+
+
+
+#BELOW IS CODE I NEED TO DELETE, IDEAS I PURSUED AND WHICH FAILED
+
+#first we need to simulate playing the game, then we will play it with a given amount of starting cash and total how many rounds we get until we run out of money
+play_round <- function (bankroll, bet, p = .5) {
+ chance <- rbinom(1,1,p) #RANDOM DIGIT GIVES OUT 0 OR 1 with p probability of a 1, SET THIS EQUAL TO CHANCE
+if(bankroll > 0)  {
+  if(chance == 1) { #you won
+    earnings = bet
+  } else (earnings = -bet) #you lost
+  bankroll = bankroll + earnings
+} else(print("You don't have enough money")) #if bankroll is less than 0 give this message
+ return(bankroll)
+} 
+play_round(1000, 10000)
+
+play_n_rounds <- function(n, bankroll, bet, p=.5) {
+ outcomes <- matrix(data=NA,1,n, byrow=F) #initializes a one row null matrix of n many columns
+  outcomes <- repeat(n=n, play_round) #fills outcomes with the outcome of many rounds of play
+  if(is.numeric(outcomes[n])) {
+    survived <- 1 #if you make it through n many rounds with money, you get coded as a 1, otherwise you get coded as a zero
+    }  else (survived <- 0)
+  return(survived)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+play_to_bankrupt <- function(bankroll, bet, p = .5) {
+  count = 0
+  if(bankroll => 0) {
+    bankroll + play_round(bet, p)
+    count == count + 1
+  } else (return(count))
+} #play to bankrupt will return how many rounds the player can go until being bankrupt and will return the number of rounds they last
+
+```
     b. the probability that you have busted by the time you have placed your five hundredth bet by simulating the outcome directly. 
+```{r}
+    
+```
     c. the mean time you go bust, given that you go bust within the first 5000 hands.
+```{r}
+    
+```
     d. the mean and variance of your bankroll after 100 hands (including busts).
+```{r}
+    
+```
     e. the mean and variance of your bankroll after 500 hands (including busts).
+```{r}
+    
+```
  
 Note: you *must* stop playing if your player has gone bust. How will you handle this in the `for` loop?
 
