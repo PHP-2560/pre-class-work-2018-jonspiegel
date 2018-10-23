@@ -73,49 +73,6 @@ p_lose<- function(matrix) {print(1-mean(matrix))}
 p_lose(simulate_survival(5000, 100, 1000, 100))
 
 
-
-
-
-
-
----------------------------------------------------------
-
-
-
-#BELOW IS CODE I NEED TO DELETE, IDEAS I PURSUED AND WHICH FAILED
-
-#first we need to simulate playing the game, then we will play it with a given amount of starting cash and total how many rounds we get until we run out of money
-play_round <- function (bankroll, bet, p = .5) {
- chance <- rbinom(1,1,p) #RANDOM DIGIT GIVES OUT 0 OR 1 with p probability of a 1, SET THIS EQUAL TO CHANCE
-if(bankroll > 0)  {
-  if(chance == 1) { #you won
-    earnings = bet
-  } else (earnings = -bet) #you lost
-  bankroll = bankroll + earnings
-} else(print("You don't have enough money")) #if bankroll is less than 0 give this message
- return(bankroll)
-} 
-play_round(1000, 10000)
-
-play_n_rounds <- function(n, bankroll, bet, p=.5) {
- outcomes <- matrix(data=NA,1,n, byrow=F) #initializes a one row null matrix of n many columns
-  outcomes <- repeat(n=n, play_round) #fills outcomes with the outcome of many rounds of play
-  if(is.numeric(outcomes[n])) {
-    survived <- 1 #if you make it through n many rounds with money, you get coded as a 1, otherwise you get coded as a zero
-    }  else (survived <- 0)
-  return(survived)
-}
------------------
-
-
-play_to_bankrupt <- function(bankroll, bet, p = .5) {
-  count = 0
-  if(bankroll => 0) {
-    bankroll + play_round(bet, p)
-    count == count + 1
-  } else (return(count))
-} #play to bankrupt will return how many rounds the player can go until being bankrupt and will return the number of rounds they last
-
 ```
     b. the probability that you have busted by the time you have placed your five hundredth bet by simulating the outcome directly. 
 ```{r}
@@ -215,6 +172,9 @@ mean(test) #gave 1016.49
 Note: you *must* stop playing if your player has gone bust. How will you handle this in the `for` loop?
 
 2. **Markov Chains**. Suppose you have a game where the probability of winning on your first hand is 48%; each time you win, that probability goes up by one percentage point for the next game (to a maximum of 100%, where it must stay), and each time you lose, it goes back down to 48%. Assume you cannot go bust and that the size of your wager is a constant $100.
+```{r}
+
+```
     a. Is this a fair game? Simulate one hundred thousand sequential hands to determine the size of your return. Then repeat this simulation 99 more times to get a range of values to calculate the expectation.
     b. Repeat this process but change the starting probability to a new value within 2% either way. Get the expected return after 100 repetitions. Keep exploring until you have a return value that is as fair as you can make it. Can you do this automatically?
     c. Repeat again, keeping the initial probability at 48%, but this time change the probability increment to a value different from 1%. Get the expected return after 100 repetitions. Keep changing this value until you have a return value that is as fair as you can make it. 
