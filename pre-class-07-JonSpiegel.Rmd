@@ -165,15 +165,50 @@ mean(simulate_bust_time(500, 5000, 1000, 100), na.rm=T) #ran a simulation of 500
 ```
     d. the mean and variance of your bankroll after 100 hands (including busts).
 ```{r}
+#we need to convert back from the cumsum to the money value by multiplying it by the bet. This will require changing some of our earlier code which had given a 0 1 output
 whats_left <- function(bankroll, bet, cumsum) {
   finalbankroll = bankroll + bet*cumsum
   return(finalbankroll)
 }
 
 
+
+play_n_rounds3 <- function(n, bankroll, bet, p=.5){ #note this is 3rd one of these
+cumsum <- 0
+thisround <- 0
+roundsmatrix <- matrix(NA, 1, n, byrow=F) 
+  for(i in 1:n) { 
+    if(cumsum == -bankroll/bet) { 
+      roundsmatrix[i] <- cumsum
+    } else { 
+      thisround <- rbinom(1,1,p)*2-1 
+    cumsum <- cumsum + thisround 
+    roundsmatrix[i] <- bankroll + bet*cumsum} #We change what we store now so that roundsmatrix (which will be our output) has our dollar total
+  }
+print(roundsmatrix[n]) #this will be zero if we go bankrupt
+}
+play_n_rounds3(12, 1000,100) #testing the function
+
+
+simulate_gambles <- function (sims, n, bankroll, bet, p=.5) { #again it is roughly the same function with some changes
+  results <- matrix(NA, 1,sims, byrow=F) 
+  for(i in 1:sims) {
+    results[1,i] <- play_n_rounds3(n, bankroll, bet, p) #this time we use rounds3
+  } 
+#no longer need our for loop since we are using all cases
+  return(results)
+} 
+test <- simulate_gambles(1000,100, 1000,100) #1000 simulations of 100 hands with 1000 strting bankroll and bets of 100
+mean(test) #gave 1012.99
+(sd(test))^2 #not sure why var is throwing an error??? sd works fine though so I'll use it, gave 809090.5
+
+
 ```
     e. the mean and variance of your bankroll after 500 hands (including busts).
 ```{r}
+test2 <- simulate_gambles(1000,500, 1000,100) #1000 simulations of 500 hands with 1000 strting bankroll and bets of 100
+mean(test) #gave 1016.49
+(sd(test))^2 #gave 2760734
     
 ```
  
