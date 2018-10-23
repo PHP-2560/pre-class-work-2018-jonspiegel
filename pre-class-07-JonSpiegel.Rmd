@@ -34,22 +34,21 @@ With this project we will simulate a famoues probability problem. This will not 
 ```{r}
 
 #You lose when the cumulative sum (where a win is 1 and a loss is -1) is such that -bankroll/bet >= -cumsum (i.e. bankroll/bet tells you how many net losses you can sustain)
-play_n_rounds1 <- function(n, bankroll, bet, p=.5){
+play_n_rounds1 <- function(n, bankroll, bet, p=.5){ #here we simulate n rounds
 cumsum <- 0
 thisround <- 0
-roundsmatrix <- matrix(NA, 1, n, byrow=F)
-  for(i in 1:n) {
-    if(cumsum == -bankroll/bet) {
+roundsmatrix <- matrix(NA, 1, n, byrow=F) #initiallizing the values and matrix we will be using
+  for(i in 1:n) { #want n many rounds
+    if(cumsum == -bankroll/bet) { #if your out of money, keep the ratio of your cumsum
       roundsmatrix[i] <- cumsum
-    } else {
+    } else { #play again
       thisround <- rbinom(1,1,p)*2-1 #gives positive 1 or negative 1 (a win or a loss)
-    cumsum <- cumsum + thisround
+    cumsum <- cumsum + thisround #cumsum keeps a cumulative sum
     roundsmatrix[i] <- cumsum}
-
   }
 print(roundsmatrix[n]) #if this value is -bankroll/bet you ran out of money, otherwise you made it
 }
-as.list(play_n_rounds1(12, 1000,1000)) #testing the function
+play_n_rounds1(12, 1000,1000) #testing the function
 
 
 simulate_survival <- function (sims, n, bankroll, bet, p=.5) {
@@ -79,7 +78,7 @@ p_lose(simulate_survival(5000, 100, 1000, 100))
 
 
 
-
+---------------------------------------------------------
 
 
 
@@ -106,17 +105,7 @@ play_n_rounds <- function(n, bankroll, bet, p=.5) {
     }  else (survived <- 0)
   return(survived)
 }
-
-
-
-
-
-
-
-
-
-
-
+-----------------
 
 
 play_to_bankrupt <- function(bankroll, bet, p = .5) {
@@ -130,15 +119,58 @@ play_to_bankrupt <- function(bankroll, bet, p = .5) {
 ```
     b. the probability that you have busted by the time you have placed your five hundredth bet by simulating the outcome directly. 
 ```{r}
+p_lose(simulate_survival(5000, 500, 1000, 100)) #this is the same thing, we just changed n
     
 ```
     c. the mean time you go bust, given that you go bust within the first 5000 hands.
 ```{r}
-    
+#now we need a counter, and we only want to look at the times where we bust, first we will ad a counter into the earlier code then we will  limit ourselves to busts
+
+play_n_rounds2 <- function(n, bankroll, bet, p=.5){ #play n rounds 2 will tell us how many rounds we survived ( with a maximum value of n)
+cumsum <- 0
+thisround <- 0
+count <- 0
+roundsmatrix <- matrix(NA, 2, n, byrow=F) #This time we will work with a 2 row matrix (one for the count)
+  for(i in 1:n) { 
+    if(cumsum == -bankroll/bet) { 
+      roundsmatrix[1,i] <- cumsum
+      roundsmatrix[2,i] <- count #if you've lost, the count stays the same, lets fill that in for every column thereafter
+    } else { 
+      count = i #set count as i (note we can't simply use i or we'd have an issue in the above if statement since it'd keep growing even if we ran out of bankroll)
+      thisround <- rbinom(1,1,p)*2-1 
+    cumsum <- cumsum + thisround 
+    roundsmatrix[1,i] <- cumsum
+    roundsmatrix[2,i] <- count}
+  }
+print(roundsmatrix[2,n]) #tells you how many rounds were survived
+}
+play_n_rounds2(12, 1000,500) #testing the function
+
+
+
+simulate_bust_time <- function (sims, n, bankroll, bet, p=.5) { #this time it will store how many rounds were survived in the simulation, not this is very similar to simulate_survival
+  results <- matrix(NA, 1,sims, byrow=F) 
+  for(i in 1:sims) {
+    results[1,i] <- play_n_rounds2(n, bankroll, bet, p) #calls rounds2 not rounds1
+  } #now we need to remove anyone who didn't go bust
+  for(i in 1:sims) {
+    if(results[1,i] == n) {
+      results[1,i] <- NA #set people who made it to the end as NA
+    } #no else statement needed
+  }
+  return(results)
+} 
+
+mean(simulate_bust_time(500, 5000, 1000, 100), na.rm=T) #ran a simulation of 500 times looking at the average amount of time busters spent playing before they busted (looking only at those who busted within their first 5000 plays) - they started with 1000 and bet 100 per play. Mean was 509.8045
 ```
     d. the mean and variance of your bankroll after 100 hands (including busts).
 ```{r}
-    
+whats_left <- function(bankroll, bet, cumsum) {
+  finalbankroll = bankroll + bet*cumsum
+  return(finalbankroll)
+}
+
+
 ```
     e. the mean and variance of your bankroll after 500 hands (including busts).
 ```{r}
