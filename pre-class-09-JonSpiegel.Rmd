@@ -24,7 +24,7 @@ options(scipen = 3, digits = 3)
 ```{r}
 library(httr)
 library(xml2)
-library(rvest) #launching libraries for webscraping
+library(rvest)#launching libraries for webscraping
 
 savedurl <- "https://money.cnn.com/data/us_markets/"
 read_html(savedurl)
@@ -41,24 +41,27 @@ content_type(savedurl) #finding type
 ```{r}
 readurl <- read_html(savedurl)
 html_nodes(readurl, "Stock Sectors") #not sure what I am missing here
-
+html_table(read_html(savedurl, "table")[[2]]) #this is how he does it in the videos.. not sure why it wont let me pick the second table??? It does let me here get the tables (if I remove the [[2]])
+j <- read_html(savedurl, "table")
+html_table(j)
 ```
 4. Extract all of the "3 Month % Change" values from the "Stock Sectors" table.
 ```{r}
-html_nodes(readurl, "3 Month % Change") #thoroughly confused
+#however you read the first column in part 3, its the same table, next column
 ```
 5. Extract the table "What's Moving" (top middle of the web page) into a data-frame.
 ```{r}
 html_nodes(readurl, "What's moving") #still not working
 ```
 6. Re-construct all of the links from the first column of the "What's Moving" table.
+Hint: the base URL is "https://money.cnn.com"
 ```{r}
 #no clue how to start that! Nothing like this was in the videos!?
 ```
-Hint: the base URL is "https://money.cnn.com"
+
 7. Extract the titles under the "Latest News" section (bottom middle of the web page.)
 ```{r}
-
+html_nodes(readurl, css= "Latest News")
 ```
 8. To understand the structure of the data in a web page, it is often useful to know what the underlying attributes are of the text you see. Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the "What's Moving" table.
 ```{r}
