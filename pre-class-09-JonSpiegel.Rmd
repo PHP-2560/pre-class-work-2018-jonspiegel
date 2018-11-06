@@ -56,12 +56,13 @@ class(table1) #yayy its a dataframe
 6. Re-construct all of the links from the first column of the "What's Moving" table.
 Hint: the base URL is "https://money.cnn.com"
 ```{r}
-#no clue how to start that! Nothing like this was in the videos!?
+
 ```
 
 7. Extract the titles under the "Latest News" section (bottom middle of the web page.)
 ```{r}
-html_nodes(readurl, css= "Latest News")
+readurl <- read_html(savedurl)
+html_node(readurl, "div#Latest News ~ ul") #I expected this to work...
 ```
 8. To understand the structure of the data in a web page, it is often useful to know what the underlying attributes are of the text you see. Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the "What's Moving" table.
 ```{r}
@@ -78,6 +79,8 @@ Hint: in this case, the values are stored under the "class" attribute.
 ```{r}
 
 ```
+
+#6
 
 
 
