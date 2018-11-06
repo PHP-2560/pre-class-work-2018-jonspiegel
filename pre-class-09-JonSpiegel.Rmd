@@ -39,19 +39,19 @@ content_type(savedurl) #finding type
 ```
 3. Extract all of the sector names from the "Stock Sectors" table (bottom left of the web page.)
 ```{r}
-readurl <- read_html(savedurl)
-html_nodes(readurl, "Stock Sectors") #not sure what I am missing here
-html_table(read_html(savedurl, "table")[[2]]) #this is how he does it in the videos.. not sure why it wont let me pick the second table??? It does let me here get the tables (if I remove the [[2]])
-j <- read_html(savedurl, "table")
-html_table(j)
+table2 <- html_table(read_html(savedurl, "table"))[[2]] #make a dataframe from the table
+table2 #look at the dataframe
+table2[,1] #we want the first column of the df
+
 ```
 4. Extract all of the "3 Month % Change" values from the "Stock Sectors" table.
 ```{r}
-#however you read the first column in part 3, its the same table, next column
+table2[,2] #now we want the second column from the df
 ```
 5. Extract the table "What's Moving" (top middle of the web page) into a data-frame.
 ```{r}
-html_nodes(readurl, "What's moving") #still not working
+table1 <- html_table(read_html(savedurl, "table"))[[1]] 
+class(table1) #yayy its a dataframe
 ```
 6. Re-construct all of the links from the first column of the "What's Moving" table.
 Hint: the base URL is "https://money.cnn.com"
