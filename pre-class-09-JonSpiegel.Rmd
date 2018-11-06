@@ -62,7 +62,11 @@ Hint: the base URL is "https://money.cnn.com"
 7. Extract the titles under the "Latest News" section (bottom middle of the web page.)
 ```{r}
 readurl <- read_html(savedurl)
-html_node(readurl, "div#Latest News ~ ul") #I expected this to work...
+page_text <- html(savedurl)
+latestnews <- html_node(page_text, "div#section_latestnews") #this doesn't give it the way we want it to... we want the headline list
+html_node(page_text, "div#HeadlineList") #this returns NA though so we can't just ask directly
+html_node(page_text, "div#section_latestnews~ ul")#I expected this to work...
+html_node(page_text, "div#HeadlineList~ ul") #still NA
 ```
 8. To understand the structure of the data in a web page, it is often useful to know what the underlying attributes are of the text you see. Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the "What's Moving" table.
 ```{r}
