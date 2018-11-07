@@ -56,35 +56,37 @@ class(table1) #yayy its a dataframe
 6. Re-construct all of the links from the first column of the "What's Moving" table.
 Hint: the base URL is "https://money.cnn.com"
 ```{r}
-
+paste0("https://money.cnn.com", html_attr(html_nodes(readurl, "td .wsod_symbol"), "href")) #could never have done this without basically finding it online. I do not know these functions. The videos didn't teach me this
 ```
 
 7. Extract the titles under the "Latest News" section (bottom middle of the web page.)
 ```{r}
 readurl <- read_html(savedurl)
-page_text <- html(savedurl)
-latestnews <- html_node(page_text, "div#section_latestnews") #this doesn't give it the way we want it to... we want the headline list
-html_node(page_text, "div#HeadlineList") #this returns NA though so we can't just ask directly
-html_node(page_text, "div#section_latestnews~ ul")#I expected this to work...
-html_node(page_text, "div#HeadlineList~ ul") #still NA
+#page_text <- html(savedurl)
+#latestnews <- html_node(page_text, "div#section_latestnews") #this doesn't give it the way we want it to... we want the headline list
+#html_node(page_text, "div#HeadlineList") #this returns NA though so we can't just ask directly
+#html_node(page_text, "div#section_latestnews~ ul")#I expected this to work...
+#html_node(page_text, "div#HeadlineList~ ul") #still NA
+
+html_text(html_nodes(readurl, ".HeadlineList a")) #found online again. Not sure why it is HeadlineList a. the a is not expected to me. I don't see that in the code online. I commented out my incorrect attempts above
 ```
 8. To understand the structure of the data in a web page, it is often useful to know what the underlying attributes are of the text you see. Extract the attributes (and their values) of the HTML element that holds the timestamp underneath the "What's Moving" table.
 ```{r}
-#I don't even know what this is asking
+readurl %>% html_nodes(".wsod_disclaimer > span") %>% html_attrs() %>% .[[1]] #again I needed the internet in order to figure out how to do this one. I can't take much credit for it at all. I am still unclear on exactly what goes on
 ```
 
 9. Extract the values of the blue percentage-bars from the "Trending Tickers" table (bottom right of the web page.)
 Hint: in this case, the values are stored under the "class" attribute.
 ```{r}
-table3 <- html_table(read_html(savedurl, "table"))[[3]] #Oh no! It lists them as NA... No idea how to retrieve what they are
+#table3 <- html_table(read_html(savedurl, "table"))[[3]] #Oh no! It lists them as NA... No idea how to retrieve what they are
+#so the above commented out code above doesn't work because it gives NA's. It must use something like how I just found number 8 to work
+readurl %>% html_nodes(".scale div") %>% html_attr("class") #in the code on the site we can see how the bars are stored as scale in the div and so we can call them as such
 ```
 
 10. Get the links of all of the "svg" images on the web page.
 ```{r}
-html_text(read_html(savedurl, "svg"))
+readurl %>% html_nodes("img[src$='svg']") %>% html_attr("src") #I knew the general structure of how to due this one but img[src$='svg'] required internet's help
 ```
-
-#6-10
 
 
 
