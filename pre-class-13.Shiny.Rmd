@@ -1,0 +1,28 @@
+
+```{r,setup, echo=FALSE, cache=TRUE}
+library("shiny")
+
+#To show you have done this, create a simple app that takes a standard normal statistic and displays the probability of achieving that value or greater in a standard normal distribution. In other words it takes a (z) value and gives a p-value.
+
+?pnorm
+#pnorm takes in q, mean = 0, sd=1, lower.tailT, log.p=F
+
+pnorm(.5, lower.tail=F) #this is the function that the shiny will use. It will need to take the input from shiny of the q value (here 0.5). I used lower.tail=F since the intructions say at or above the value in the distribution
+
+
+
+ui <- fluidPage(
+  titlePanel("Probability of Score Above Given Z"), #gave it a title
+  numericInput("zinput", "z-input:", 0),
+  verbatimTextOutput("value")
+)
+server <- function(input, output) {
+  output$value <- renderText({ pnorm(input$zinput, lower.tail=F) }) #function is in the output here
+}
+shinyApp(ui, server)
+
+
+```
+
+
+
